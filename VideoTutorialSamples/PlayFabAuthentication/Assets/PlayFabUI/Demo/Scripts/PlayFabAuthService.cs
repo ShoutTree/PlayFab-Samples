@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using PlayFab;
@@ -324,6 +324,7 @@ public class PlayFabAuthService  {
                 if (OnPlayFabError != null)
                 {
                     //Report error result back to subscriber
+                    Debug.Log("AddUsernamePassword OnPlayFabError result.PlayFabId is " + result.PlayFabId);
                     OnPlayFabError.Invoke(error);
                 }
             });

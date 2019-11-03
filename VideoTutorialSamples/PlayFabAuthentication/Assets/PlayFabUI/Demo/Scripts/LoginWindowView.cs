@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab.Json;
 
 #if FACEBOOK 
 using Facebook.Unity;
@@ -39,6 +40,8 @@ public class LoginWindowView : MonoBehaviour {
     public GameObject RegisterPanel;
     public GameObject Panel;
     public GameObject Next;
+
+    public GameObject CloudScriptButton;
 
     //Settings for what data to get from playfab on login.
     public GetPlayerCombinedInfoRequestParams InfoRequestParams;
@@ -112,6 +115,40 @@ public class LoginWindowView : MonoBehaviour {
         _AuthService.Authenticate();
     }
 
+    void RunLogTest()
+    {
+        PlayFabClientAPI.ExecuteCloudScript(
+            new ExecuteCloudScriptRequest
+            {
+                FunctionName = "logTest",
+            // handy for logs because the response will be duplicated on PlayStream
+            GeneratePlayStreamEvent = true
+            },
+            result =>
+            {
+                var error123Present = false;
+                foreach (var log in result.Logs)
+                {
+                    if (log.Level != "Error") continue;
+                    var errData = (JsonObject)log.Data;
+                    object errCode;
+                    var errCodePresent = errData.TryGetValue("errCode", out errCode);
+                    if (errCodePresent && (ulong)errCode == 123) error123Present = true;
+                }
+
+                if (error123Present)
+                    Debug.Log("There was a bad, bad error!");
+                else
+                    Debug.Log("Nice weather we're having.");
+
+                if (result.Error != null)
+                {
+                    Debug.Log(string.Format("There was error in the CloudScript function {0}:\n Error Code: {1}\n Message: {2}"
+                    , result.FunctionName, result.Error.Error, result.Error.Message));
+                }
+
+            }, null);
+    }
 
     /// <summary>
     /// Login Successfully - Goes to next screen.
@@ -124,6 +161,23 @@ public class LoginWindowView : MonoBehaviour {
         //Show our next screen if we logged in successfully.
         Panel.SetActive(false);
         Next.SetActive(true);
+
+        CloudScriptButton.SetActive(true);
+
+        RunLogTest();
+
+        var request = new GetPlayerCombinedInfoRequest
+        {
+            InfoRequestParameters = new GetPlayerCombinedInfoRequestParams { GetUserData = true, GetUserReadOnlyData = true, GetUserInventory = true, GetUserVirtualCurrency = true, GetUserAccountInfo = true, GetPlayerStatistics = true }
+        };
+
+        PlayFabClientAPI.GetPlayerCombinedInfo(request, OnGetPlayerCombinedInfoSuccess, OnPlayFaberror);
+    }
+
+    private void OnGetPlayerCombinedInfoSuccess(GetPlayerCombinedInfoResult result)
+    {
+        int test = 777;
+        Debug.Log("[chudu] OnGetPlayerCombinedInfoSuccess");
     }
 
     /// <summary>
@@ -335,11 +389,36 @@ public class LoginWindowView : MonoBehaviour {
         {
             if (success)
             {
-                var serverAuthCode = PlayGamesPlatform.Instance.GetServerAuthCode();
-                _AuthService.AuthTicket = serverAuthCode;
-                _AuthService.Authenticate(Authtypes.Google);
+                //var serverAuthCode = PlayGamesPlatform.Instance.GetServerAuthCode();
+                //_AuthService.AuthTicket = serverAuthCode;
+                //_AuthService.Authenticate(Authtypes.Google);
             }
         });
     }
 
+    // Build the request object and access the API
+    public void StartCloudHelloWorld()
+    {
+        PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest()
+        {
+            FunctionName = "helloWorld", // Arbitrary function name (must exist in your uploaded cloud.js file)
+            FunctionParameter = new { inputValue = "YOUR NAME" }, // The parameter provided to your function
+            GeneratePlayStreamEvent = true, // Optional - Shows this event in PlayStream
+        }, OnCloudHelloWorld, OnErrorShared);
+    }
+    // OnCloudHelloWorld defined in the next code block
+    private void OnCloudHelloWorld(ExecuteCloudScriptResult result)
+    {
+        // CloudScript returns arbitrary results, so you have to evaluate them one step and one parameter at a time
+        Debug.Log(JsonWrapper.SerializeObject(result.FunctionResult));
+        JsonObject jsonResult = (JsonObject)result.FunctionResult;
+        object messageValue;
+        jsonResult.TryGetValue("messageValue", out messageValue); // note how "messageValue" directly corresponds to the JSON values set in CloudScript
+        Debug.Log((string)messageValue);
+    }
+
+    private void OnErrorShared(PlayFabError error)
+    {
+        Debug.Log(error.GenerateErrorReport());
+    }
 }

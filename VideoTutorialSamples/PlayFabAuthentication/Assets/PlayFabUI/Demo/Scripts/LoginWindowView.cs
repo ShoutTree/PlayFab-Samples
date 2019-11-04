@@ -166,12 +166,36 @@ public class LoginWindowView : MonoBehaviour {
 
         RunLogTest();
 
+        WriteEvent();
+
         var request = new GetPlayerCombinedInfoRequest
         {
             InfoRequestParameters = new GetPlayerCombinedInfoRequestParams { GetUserData = true, GetUserReadOnlyData = true, GetUserInventory = true, GetUserVirtualCurrency = true, GetUserAccountInfo = true, GetPlayerStatistics = true }
         };
 
         PlayFabClientAPI.GetPlayerCombinedInfo(request, OnGetPlayerCombinedInfoSuccess, OnPlayFaberror);
+    }
+
+    public void WriteEvent()
+    {
+        PlayFabClientAPI.WritePlayerEvent(new WriteClientPlayerEventRequest
+        {
+            EventName = "ForumPostEvent",
+            Body = new Dictionary<string, object> {
+            { "Subject", "My First Post" },
+            { "Body", "My awesome Post." }
+        }
+        }, LogWriteEventSuccess, LogWriteEventFailure);
+    }
+
+    private void LogWriteEventSuccess(WriteEventResponse response)
+    {
+
+    }
+
+    private void LogWriteEventFailure(PlayFabError error)
+    {
+
     }
 
     private void OnGetPlayerCombinedInfoSuccess(GetPlayerCombinedInfoResult result)

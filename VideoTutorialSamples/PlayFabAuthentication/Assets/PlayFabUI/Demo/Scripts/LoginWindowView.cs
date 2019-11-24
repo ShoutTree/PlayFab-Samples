@@ -43,6 +43,8 @@ public class LoginWindowView : MonoBehaviour {
 
     public GameObject CloudScriptButton;
 
+    public GameObject ResetScoreTestObj;
+
     //Settings for what data to get from playfab on login.
     public GetPlayerCombinedInfoRequestParams InfoRequestParams;
 
@@ -127,10 +129,10 @@ public class LoginWindowView : MonoBehaviour {
         {
             CustomId = playerIndex.ToString(),
             CreateAccount = true
-        }, result => OnLoggedIn(result, playerIndex, leaderboardName), FailureCallback);
+        }, result => OnLoggedInTemp(result, playerIndex, leaderboardName), FailureCallback);
     }
 
-    private void OnLoggedIn(LoginResult loginResult, int playerIndex, string leaderboardName)
+    private void OnLoggedInTemp(LoginResult loginResult, int playerIndex, string leaderboardName)
     {
         Debug.Log("Player has successfully logged in with " + loginResult.PlayFabId);
         PlayFabClientAPI.UpdatePlayerStatistics(new UpdatePlayerStatisticsRequest
@@ -210,12 +212,97 @@ public class LoginWindowView : MonoBehaviour {
 
         WriteEvent();
 
+        printALeaderboard();
+
+        showResetScore();
+
         var request = new GetPlayerCombinedInfoRequest
         {
             InfoRequestParameters = new GetPlayerCombinedInfoRequestParams { GetUserData = true, GetUserReadOnlyData = true, GetUserInventory = true, GetUserVirtualCurrency = true, GetUserAccountInfo = true, GetPlayerStatistics = true }
         };
 
         PlayFabClientAPI.GetPlayerCombinedInfo(request, OnGetPlayerCombinedInfoSuccess, OnPlayFaberror);
+    }
+
+
+    void printALeaderboard()
+    {
+        PlayFabClientAPI.GetLeaderboard(new GetLeaderboardRequest()
+        {
+            StatisticName = "TestResetFromCloudScript_ScheduledTask",
+        }, result =>
+        {
+            Debug.Log("Leaderboard version: " + result.Version);
+            foreach (var entry in result.Leaderboard)
+            {
+                Debug.Log(entry.PlayFabId + " " + entry.StatValue);
+            }
+        }, FailureCallback);
+
+        //PlayFabClientAPI.GetLeaderboardAroundPlayerRequest(new GetLeaderboardAroundPlayerRequestResult()
+        //{
+        //    StatisticName = "TestResetFromCloudScript_ScheduledTask",
+        //}, result =>
+        //{
+        //    Debug.Log("Leaderboard version: " + result.Version);
+        //    foreach (var entry in result.Leaderboard)
+        //    {
+        //        Debug.Log(entry.PlayFabId + " " + entry.StatValue);
+        //    }
+        //}, FailureCallback);
+
+    }
+
+
+    private void showResetScore()
+    {
+        ResetScoreTestObj.SetActive(true);
+
+        PlayFabClientAPI.GetPlayerStatistics(new GetPlayerStatisticsRequest(), OnGetUserStatisticsSuccess, OnErrorShared);
+    }
+
+    private void OnGetUserStatisticsSuccess(GetPlayerStatisticsResult result)
+    {
+        //TODO update to use new 
+        foreach (var each in result.Statistics)
+        {
+            if (each.StatisticName == "TestResetFromCloudScript_ScheduledTask")
+            {
+                setScoreToUI(each.Value.ToString());
+            }
+        }
+    }
+
+    private void setScoreToUI(string scoreStr)
+    {
+        foreach(Transform childTransform in ResetScoreTestObj.transform)
+        {
+            if (childTransform.name == "ScoreStr")
+            {
+                childTransform.GetComponent<Text>().text = scoreStr;
+            }
+        }
+    }
+
+    public void resetScore()
+    {
+        PlayFabClientAPI.ExecuteCloudScript(new ExecuteCloudScriptRequest()
+        {
+            FunctionName = "resetForAbove4000FromClient", // Arbitrary function name (must exist in your uploaded cloud.js file)
+            //FunctionParameter = new { inputValue = "YOUR NAME" }, // The parameter provided to your function
+            GeneratePlayStreamEvent = true, // Optional - Shows this event in PlayStream
+        }, OnResetScore, OnErrorShared);
+    }
+
+    private void OnResetScore(ExecuteCloudScriptResult result)
+    {
+        Debug.Log(JsonWrapper.SerializeObject(result.FunctionResult));
+        JsonObject jsonResult = (JsonObject)result.FunctionResult;
+        object scoreValue;
+        jsonResult.TryGetValue("resettedScore", out scoreValue); // note how "messageValue" directly corresponds to the JSON values set in CloudScript
+        Debug.Log(scoreValue.ToString());
+
+        setScoreToUI(scoreValue.ToString());
     }
 
     public void WriteEvent()
@@ -239,6 +326,7 @@ public class LoginWindowView : MonoBehaviour {
     {
 
     }
+
 
     private void OnGetPlayerCombinedInfoSuccess(GetPlayerCombinedInfoResult result)
     {

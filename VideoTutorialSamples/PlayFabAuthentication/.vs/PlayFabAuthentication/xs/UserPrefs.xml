@@ -1,20 +1,30 @@
 ﻿<Properties StartupConfiguration="{04E17379-CC6A-B380-128F-4931658F5370}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Photon/PhotonRealtime/Code/WebRpc.cs">
     <Files>
-      <File FileName="Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" Line="306" Column="6" />
+      <File FileName="Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" Line="394" Column="38" />
       <File FileName="Assets/PlayFabSdk/Client/PlayFabClientModels.cs" />
       <File FileName="Assets/PlayFabUI/Demo/Scripts/LoggedInWindowView.cs" Line="11" Column="1" />
-      <File FileName="Assets/PlayFabUI/Demo/Scripts/PlayFabAuthService.cs" Line="233" Column="54" />
-      <File FileName="Assets/PlayFabSdk/Server/PlayFabServerAPI.cs" Line="22" Column="46" />
-      <File FileName="Assets/PlayFabSdk/Shared/SignalR.NET20/Transports/HttpBasedTransport.cs" Line="206" Column="63" />
-      <File FileName="Assets/PlayFabSdk/Shared/SignalR.NET20/ConnectionExtensions.cs" Line="9" Column="61" />
-      <File FileName="Assets/PlayFabSdk/Shared/SignalR.NET20/Hubs/HubProxy.cs" Line="28" Column="25" />
+      <File FileName="Assets/PlayFabUI/Demo/Scripts/PlayFabAuthService.cs" Line="500" Column="33" />
+      <File FileName="Assets/PlayFabSdk/Server/PlayFabServerAPI.cs" />
+      <File FileName="Assets/PlayFabSdk/Shared/SignalR.NET20/Transports/HttpBasedTransport.cs" />
+      <File FileName="Assets/PlayFabSdk/Shared/SignalR.NET20/ConnectionExtensions.cs" />
+      <File FileName="Assets/PlayFabSdk/Shared/SignalR.NET20/Hubs/HubProxy.cs" />
+      <File FileName="Assets/PlayFabAuthenticator.cs" Line="115" Column="73" />
+      <File FileName="Assets/Photon/PhotonRealtime/Code/LoadbalancingPeer.cs" Line="1908" Column="20" />
+      <File FileName="Assets/Photon/PhotonRealtime/Code/WebRpc.cs" Line="103" Column="18" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="PlayFabAuthentication" expanded="True">
             <Node name="Assets" expanded="True">
+              <Node name="Photon" expanded="True">
+                <Node name="PhotonRealtime" expanded="True">
+                  <Node name="Code" expanded="True">
+                    <Node name="WebRpc.cs" selected="True" />
+                  </Node>
+                </Node>
+              </Node>
               <Node name="PlayFabSdk" expanded="True">
                 <Node name="Client" expanded="True" />
                 <Node name="Server" expanded="True" />
@@ -27,9 +37,7 @@
               </Node>
               <Node name="PlayFabUI" expanded="True">
                 <Node name="Demo" expanded="True">
-                  <Node name="Scripts" expanded="True">
-                    <Node name="LoginWindowView.cs" selected="True" />
-                  </Node>
+                  <Node name="Scripts" expanded="True" />
                 </Node>
               </Node>
             </Node>
@@ -40,7 +48,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="21115122-9a88-4176-8556-59b2093ca6f1" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="c35450da-03a0-4969-8ded-d402b2c7956a" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Volumes/macPartition/projects/myProject/UnityProjects/playfab/PlayFab-SamplesShouttree/VideoTutorialSamples/PlayFabAuthentication/Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" relfile="Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" line="269" column="1" />

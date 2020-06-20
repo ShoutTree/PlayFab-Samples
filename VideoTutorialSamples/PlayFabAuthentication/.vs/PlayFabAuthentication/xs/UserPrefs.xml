@@ -13,7 +13,7 @@
       <File FileName="Assets/Photon/PhotonRealtime/Code/LoadbalancingPeer.cs" />
       <File FileName="Assets/Photon/PhotonRealtime/Code/WebRpc.cs" />
       <File FileName="Assets/Photon/PhotonUnityNetworking/Demos/DemoHub/Scripts/DemoHubManager.cs" />
-      <File FileName="Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scripts/Launcher.cs" Line="153" Column="43" />
+      <File FileName="Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scripts/Launcher.cs" Line="186" Column="1" />
       <File FileName="Assets/Photon/PhotonUnityNetworking/Code/PunClasses.cs" />
       <File FileName="Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scripts/GameManager.cs" />
     </Files>
@@ -40,16 +40,6 @@
                   </Node>
                 </Node>
               </Node>
-              <Node name="PlayFabSdk" expanded="True">
-                <Node name="Client" expanded="True" />
-                <Node name="Server" expanded="True" />
-                <Node name="Shared" expanded="True">
-                  <Node name="SignalR.NET20" expanded="True">
-                    <Node name="Hubs" expanded="True" />
-                    <Node name="Transports" expanded="True" />
-                  </Node>
-                </Node>
-              </Node>
               <Node name="PlayFabUI" expanded="True">
                 <Node name="Demo" expanded="True">
                   <Node name="Scripts" expanded="True" />
@@ -63,7 +53,7 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b3007672-cf00-4ca6-9d93-1f8df2de7e45" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="0835360e-6b66-4373-83e4-0a5bf3f708e4" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Volumes/macPartition/projects/myProject/UnityProjects/playfab/PlayFab-SamplesShouttree/VideoTutorialSamples/PlayFabAuthentication/Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" relfile="Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" line="269" column="1" />

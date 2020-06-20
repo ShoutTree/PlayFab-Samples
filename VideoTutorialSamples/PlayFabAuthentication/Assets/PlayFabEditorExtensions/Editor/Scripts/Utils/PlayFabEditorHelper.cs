@@ -8,11 +8,10 @@ using PlayFab.PfEditor.Json;
 namespace PlayFab.PfEditor
 {
     [InitializeOnLoad]
-    public class PlayFabEditorHelper : UnityEditor.Editor
+    public static partial class PlayFabEditorHelper
     {
         #region EDITOR_STRINGS
         public static string EDEX_NAME = "PlayFab_EditorExtensions";
-        public static string EDEX_VERSION = "0.0.994";
         public static string EDEX_ROOT = Application.dataPath + "/PlayFabEditorExtensions/Editor";
         public static string DEV_API_ENDPOINT = "https://editor.playfabapi.com";
         public static string TITLE_ENDPOINT = ".playfabapi.com";
@@ -27,23 +26,22 @@ namespace PlayFab.PfEditor
         public static string CLOUDSCRIPT_PATH = EDEX_ROOT + "/Resources/" + CLOUDSCRIPT_FILENAME;
 
         public static string ADMIN_API = "ENABLE_PLAYFABADMIN_API";
-        public static string SERVER_API = "ENABLE_PLAYFABSERVER_API";
         public static string CLIENT_API = "DISABLE_PLAYFABCLIENT_API";
+        public static string ENTITY_API = "DISABLE_PLAYFABENTITY_API";
+        public static string SERVER_API = "ENABLE_PLAYFABSERVER_API";
         public static string DEBUG_REQUEST_TIMING = "PLAYFAB_REQUEST_TIMING";
-        public static string DISABLE_IDFA = "DISABLE_IDFA";
-        public static Dictionary<string, string> FLAG_LABELS = new Dictionary<string, string> {
-            { CLIENT_API, "ENABLE CLIENT API" },
-            { SERVER_API, "ENABLE SERVER API" },
-            { ADMIN_API, "ENABLE ADMIN API" },
-            { DEBUG_REQUEST_TIMING, "ENABLE REQUEST TIMES" },
-            { DISABLE_IDFA, "ENABLE IDFA" },
-        };
-        public static Dictionary<string, bool> FLAG_INVERSION = new Dictionary<string, bool> {
-            { CLIENT_API, true },
-            { SERVER_API, false },
-            { ADMIN_API, false },
-            { DEBUG_REQUEST_TIMING, false },
-            { DISABLE_IDFA, false },
+        public static string ENABLE_PLAYFABPLAYSTREAM_API = "ENABLE_PLAYFABPLAYSTREAM_API";
+        public static string ENABLE_BETA_FETURES = "ENABLE_PLAYFAB_BETA";
+        public static string ENABLE_PLAYFABPUBSUB_API = "ENABLE_PLAYFABPUBSUB_API";
+        public static Dictionary<string, PfDefineFlag> FLAG_LABELS = new Dictionary<string, PfDefineFlag> {
+            { ADMIN_API, new PfDefineFlag { Flag = ADMIN_API, Label = "ENABLE ADMIN API", Category = PfDefineFlag.FlagCategory.Api, isInverted = false, isSafe = true } },
+            { CLIENT_API, new PfDefineFlag { Flag = CLIENT_API, Label = "ENABLE CLIENT API", Category = PfDefineFlag.FlagCategory.Api, isInverted = true, isSafe = true } },
+            { ENTITY_API, new PfDefineFlag { Flag = ENTITY_API, Label = "ENABLE ENTITY API", Category = PfDefineFlag.FlagCategory.Api, isInverted = true, isSafe = true } },
+            { SERVER_API, new PfDefineFlag { Flag = SERVER_API, Label = "ENABLE SERVER API", Category = PfDefineFlag.FlagCategory.Api, isInverted = false, isSafe = true } },
+
+            { DEBUG_REQUEST_TIMING, new PfDefineFlag { Flag = DEBUG_REQUEST_TIMING, Label = "ENABLE REQUEST TIMES", Category = PfDefineFlag.FlagCategory.Feature, isInverted = false, isSafe = true } },
+            { ENABLE_BETA_FETURES, new PfDefineFlag { Flag = ENABLE_BETA_FETURES, Label = "ENABLE UNSTABLE FEATURES", Category = PfDefineFlag.FlagCategory.Feature, isInverted = false, isSafe = true } },
+            { ENABLE_PLAYFABPUBSUB_API, new PfDefineFlag { Flag = ENABLE_PLAYFABPUBSUB_API, Label = "ENABLE PubSub", Category = PfDefineFlag.FlagCategory.Feature, isInverted = false, isSafe = false } },
         };
 
         public static string DEFAULT_SDK_LOCATION = "Assets/PlayFabSdk";
@@ -75,8 +73,8 @@ namespace PlayFab.PfEditor
 
                 try
                 {
-                    if (PlayFabEditorDataService.EnvDetails != null && !string.IsNullOrEmpty(PlayFabEditorDataService.EnvDetails.edexPath))
-                        EDEX_ROOT = PlayFabEditorDataService.EnvDetails.edexPath;
+                    if (!string.IsNullOrEmpty(PlayFabEditorPrefsSO.Instance.EdExPath))
+                        EDEX_ROOT = PlayFabEditorPrefsSO.Instance.EdExPath;
                     rootFiles = Directory.GetDirectories(EDEX_ROOT);
                 }
                 catch
@@ -91,8 +89,8 @@ namespace PlayFab.PfEditor
                         if (movedRootFiles.Length > 0)
                         {
                             relocatedEdEx = true;
-                            EDEX_ROOT = movedRootFiles[0].Substring(0, movedRootFiles[0].IndexOf(PLAYFAB_EDEX_MAINFILE) - 1);
-                            PlayFabEditorDataService.EnvDetails.edexPath = EDEX_ROOT;
+                            EDEX_ROOT = movedRootFiles[0].Substring(0, movedRootFiles[0].LastIndexOf(PLAYFAB_EDEX_MAINFILE) - 1);
+                            PlayFabEditorPrefsSO.Instance.EdExPath = EDEX_ROOT;
                             PlayFabEditorDataService.SaveEnvDetails();
                         }
                     }
@@ -114,11 +112,11 @@ namespace PlayFab.PfEditor
 
         private static GUISkin GetUiStyle()
         {
-            var searchRoot = string.IsNullOrEmpty(EDEX_ROOT) ? Application.dataPath : EDEX_ROOT;
-            var pfGuiPaths = Directory.GetFiles(searchRoot, "PlayFabStyles.guiskin", SearchOption.AllDirectories);
+            var searchRootAssetFolder = Application.dataPath;
+            var pfGuiPaths = Directory.GetFiles(searchRootAssetFolder, "PlayFabStyles.guiskin", SearchOption.AllDirectories);
             foreach (var eachPath in pfGuiPaths)
             {
-                var loadPath = eachPath.Substring(eachPath.IndexOf("Assets/"));
+                var loadPath = eachPath.Substring(eachPath.LastIndexOf("Assets"));
                 return (GUISkin)AssetDatabase.LoadAssetAtPath(loadPath, typeof(GUISkin));
             }
             return null;
@@ -126,15 +124,15 @@ namespace PlayFab.PfEditor
 
         public static void SharedErrorCallback(EditorModels.PlayFabError error)
         {
-            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnError, error.ErrorMessage);
+            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnError, error.GenerateErrorReport());
         }
 
         public static void SharedErrorCallback(string error)
         {
-            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnError, error);
+            PlayFabEditor.RaiseStateUpdate(PlayFabEditor.EdExStates.OnError, "SharedErrorCallback" + error);
         }
 
-        protected internal static EditorModels.PlayFabError GeneratePlayFabError(string json, object customData = null)
+        public static EditorModels.PlayFabError GeneratePlayFabError(string json, object customData = null)
         {
             JsonObject errorDict = null;
             Dictionary<string, List<string>> errorDetails = null;
@@ -204,5 +202,21 @@ namespace PlayFab.PfEditor
             return new Vector3((colorValue / 255f), (colorValue / 255f), (colorValue / 255f));
         }
         #endregion
+    }
+
+    public class PfDefineFlag
+    {
+        public enum FlagCategory
+        {
+            Api,
+            Feature,
+            Other,
+        }
+
+        public string Flag; // Also doubles as the dictionary key
+        public string Label;
+        public FlagCategory Category;
+        public bool isInverted;
+        public bool isSafe;
     }
 }

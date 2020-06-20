@@ -115,15 +115,27 @@ namespace Photon.Pun.Demo.PunBasics
 				
 				// #Critical, we must first and foremost connect to Photon Online Server.
 			    PhotonNetwork.GameVersion = this.gameVersion;
-				PhotonNetwork.ConnectUsingSettings();
+                //PhotonNetwork.ConnectUsingSettings();
+                ConnectToChina();
 			}
 		}
 
-		/// <summary>
-		/// Logs the feedback in the UI view for the player, as opposed to inside the Unity Editor for the developer.
-		/// </summary>
-		/// <param name="message">Message.</param>
-		void LogFeedback(string message)
+        void ConnectToChina()
+        {
+            // you could also set these values directly in the PhotonServerSettings from Unity Editor
+            PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "cn";
+            PhotonNetwork.PhotonServerSettings.AppSettings.UseNameServer = true;
+            PhotonNetwork.PhotonServerSettings.AppSettings.AppIdRealtime = "3e15d31c-c3a9-4266-b1bb-74a1978a9199"; // TODO: replace with your own AppId
+            PhotonNetwork.PhotonServerSettings.AppSettings.AppVersion = "ChinaAppVersion"; // optional
+            PhotonNetwork.PhotonServerSettings.AppSettings.Server = "ns.photonengine.cn";
+            PhotonNetwork.ConnectUsingSettings();
+        }
+
+        /// <summary>
+        /// Logs the feedback in the UI view for the player, as opposed to inside the Unity Editor for the developer.
+        /// </summary>
+        /// <param name="message">Message.</param>
+        void LogFeedback(string message)
 		{
 			// we do not assume there is a feedbackText defined.
 			if (feedbackText == null) {

@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: 8813aff7-0821-4c6f-9dc4-6bfe66fcdebd
+    AppIdRealtime: 3e15d31c-c3a9-4266-b1bb-74a1978a9199
     AppIdChat: 321c0687-1cc1-4767-b91c-6ec07b0f056a
     AppIdVoice: 
-    AppVersion: 
+    AppVersion: ChinaAppVersion
     UseNameServer: 1
-    FixedRegion: 
-    Server: 
+    FixedRegion: cn
+    Server: ns.photonengine.cn
     Port: 0
     Protocol: 0
     EnableLobbyStatistics: 0

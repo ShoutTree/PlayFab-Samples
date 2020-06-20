@@ -148,8 +148,9 @@ namespace Photon.Pun.Demo.PunBasics
         public override void OnConnectedToMaster()
 		{
             // we don't want to do anything if we are not attempting to join a room. 
-			// this case where isConnecting is false is typically when you lost or quit the game, when this level is loaded, OnConnectedToMaster will be called, in that case
-			// we don't want to do anything.
+            // this case where isConnecting is false is typically when you lost or quit the game, when this level is loaded, OnConnectedToMaster will be called, in that case
+            // we don't want to do anything.
+            Debug.Log("OnConnectedToMaster");
 			if (isConnecting)
 			{
 				LogFeedback("OnConnectedToMaster: Next -> try to Join Random Room");

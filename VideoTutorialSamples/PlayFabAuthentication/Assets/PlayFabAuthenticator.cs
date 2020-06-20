@@ -91,6 +91,10 @@ public class PlayFabAuthenticator : MonoBehaviour
         LogMessage(obj.ErrorMessage);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="message"></param>
     public void LogMessage(string message)
     {
         Debug.Log("PlayFab + Photon Example: " + message);

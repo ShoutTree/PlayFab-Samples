@@ -1,17 +1,21 @@
 ﻿<Properties StartupConfiguration="{04E17379-CC6A-B380-128F-4931658F5370}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Photon/PhotonRealtime/Code/WebRpc.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scripts/Launcher.cs">
     <Files>
-      <File FileName="Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" Line="394" Column="38" />
+      <File FileName="Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" Line="315" Column="43" />
       <File FileName="Assets/PlayFabSdk/Client/PlayFabClientModels.cs" />
-      <File FileName="Assets/PlayFabUI/Demo/Scripts/LoggedInWindowView.cs" Line="11" Column="1" />
-      <File FileName="Assets/PlayFabUI/Demo/Scripts/PlayFabAuthService.cs" Line="500" Column="33" />
+      <File FileName="Assets/PlayFabUI/Demo/Scripts/LoggedInWindowView.cs" />
+      <File FileName="Assets/PlayFabUI/Demo/Scripts/PlayFabAuthService.cs" />
       <File FileName="Assets/PlayFabSdk/Server/PlayFabServerAPI.cs" />
       <File FileName="Assets/PlayFabSdk/Shared/SignalR.NET20/Transports/HttpBasedTransport.cs" />
       <File FileName="Assets/PlayFabSdk/Shared/SignalR.NET20/ConnectionExtensions.cs" />
       <File FileName="Assets/PlayFabSdk/Shared/SignalR.NET20/Hubs/HubProxy.cs" />
-      <File FileName="Assets/PlayFabAuthenticator.cs" Line="115" Column="73" />
-      <File FileName="Assets/Photon/PhotonRealtime/Code/LoadbalancingPeer.cs" Line="1908" Column="20" />
-      <File FileName="Assets/Photon/PhotonRealtime/Code/WebRpc.cs" Line="103" Column="18" />
+      <File FileName="Assets/PlayFabAuthenticator.cs" />
+      <File FileName="Assets/Photon/PhotonRealtime/Code/LoadbalancingPeer.cs" />
+      <File FileName="Assets/Photon/PhotonRealtime/Code/WebRpc.cs" />
+      <File FileName="Assets/Photon/PhotonUnityNetworking/Demos/DemoHub/Scripts/DemoHubManager.cs" />
+      <File FileName="Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scripts/Launcher.cs" Line="153" Column="43" />
+      <File FileName="Assets/Photon/PhotonUnityNetworking/Code/PunClasses.cs" />
+      <File FileName="Assets/Photon/PhotonUnityNetworking/Demos/PunBasics-Tutorial/Scripts/GameManager.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -20,8 +24,19 @@
             <Node name="Assets" expanded="True">
               <Node name="Photon" expanded="True">
                 <Node name="PhotonRealtime" expanded="True">
-                  <Node name="Code" expanded="True">
-                    <Node name="WebRpc.cs" selected="True" />
+                  <Node name="Code" expanded="True" />
+                </Node>
+                <Node name="PhotonUnityNetworking" expanded="True">
+                  <Node name="Code" expanded="True" />
+                  <Node name="Demos" expanded="True">
+                    <Node name="DemoHub" expanded="True">
+                      <Node name="Scripts" expanded="True" />
+                    </Node>
+                    <Node name="PunBasics-Tutorial" expanded="True">
+                      <Node name="Scripts" expanded="True">
+                        <Node name="Launcher.cs" selected="True" />
+                      </Node>
+                    </Node>
                   </Node>
                 </Node>
               </Node>
@@ -48,11 +63,13 @@
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="c35450da-03a0-4969-8ded-d402b2c7956a" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="b3007672-cf00-4ca6-9d93-1f8df2de7e45" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Volumes/macPartition/projects/myProject/UnityProjects/playfab/PlayFab-SamplesShouttree/VideoTutorialSamples/PlayFabAuthentication/Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" relfile="Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" line="269" column="1" />
       <Breakpoint file="/Volumes/macPartition/projects/myProject/UnityProjects/playfab/PlayFab-SamplesShouttree/VideoTutorialSamples/PlayFabAuthentication/Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" relfile="Assets/PlayFabUI/Demo/Scripts/LoginWindowView.cs" line="303" column="1" />
+      <Breakpoint file="/Volumes/macPartition/projects/myProject/UnityProjects/playfab/PlayFab-SamplesShouttree/VideoTutorialSamples/PlayFabAuthentication/Assets/PlayFabAuthenticator.cs" relfile="Assets/PlayFabAuthenticator.cs" line="122" column="1" />
+      <Breakpoint file="/Volumes/macPartition/projects/myProject/UnityProjects/playfab/PlayFab-SamplesShouttree/VideoTutorialSamples/PlayFabAuthentication/Assets/Photon/PhotonUnityNetworking/Demos/DemoHub/Scripts/DemoHubManager.cs" relfile="Assets/Photon/PhotonUnityNetworking/Demos/DemoHub/Scripts/DemoHubManager.cs" line="275" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
